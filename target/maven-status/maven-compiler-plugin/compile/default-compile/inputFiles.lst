@@ -1,0 +1,6 @@
+/home/parallels/ori-data-project/src/main/java/com/example/demo/entity/Matricula.java
+/home/parallels/ori-data-project/src/main/java/com/example/demo/DemoApplication.java
+/home/parallels/ori-data-project/src/main/java/com/example/demo/repository/MatriculasRepository.java
+/home/parallels/ori-data-project/src/main/java/com/example/demo/controller/MatriculasController.java
+/home/parallels/ori-data-project/src/main/java/com/example/demo/dto/TotalPorEstadoDTO.java
+/home/parallels/ori-data-project/src/main/java/com/example/demo/service/MatriculasService.java

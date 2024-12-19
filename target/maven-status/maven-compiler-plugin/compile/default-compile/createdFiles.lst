@@ -1,0 +1,6 @@
+com/example/demo/DemoApplication.class
+com/example/demo/entity/Matricula.class
+com/example/demo/repository/MatriculasRepository.class
+com/example/demo/service/MatriculasService.class
+com/example/demo/dto/TotalPorEstadoDTO.class
+com/example/demo/controller/MatriculasController.class

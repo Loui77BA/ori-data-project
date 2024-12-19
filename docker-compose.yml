@@ -1,56 +1,35 @@
-version: '3.8'
+version: "3.8"
+
 services:
-  postgres:
+  postgres-container:
     image: postgres:15
     container_name: postgres-container
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydb
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app-network
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+      - ./data:/csv_files # Montando o diretório 'data' como '/csv_files' no contêiner
+    ports:
+      - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U myuser"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  app:
+  spring-app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: spring-app
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydb
-      SPRING_DATASOURCE_USERNAME: myuser
-      SPRING_DATASOURCE_PASSWORD: mypassword
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
-    networks:
-      - app-network
-
-  loader:
-    image: python:3.10-slim
-    container_name: data-loader
-    depends_on:
-      postgres:
+      postgres-container:
         condition: service_healthy
-    networks:
-      - app-network
-    volumes:
-      - ./data:/data
-      - ./scripts:/scripts
-    working_dir: /scripts
-    entrypoint: ["/bin/bash", "/scripts/load_and_process_data.sh"]
 
 volumes:
   postgres_data:
-
-networks:
-  app-network:

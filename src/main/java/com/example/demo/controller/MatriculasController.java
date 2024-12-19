@@ -1,27 +1,26 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.TotalPorEstadoDTO;
-import com.example.demo.repository.MatriculasRepository;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.example.demo.entity.Matricula;
+import com.example.demo.service.MatriculasService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class MatriculasController {
 
-    private final MatriculasRepository repository;
+    private final MatriculasService service;
 
-    public MatriculasController(MatriculasRepository repository) {
-        this.repository = repository;
+    public MatriculasController(MatriculasService service) {
+        this.service = service;
     }
 
-    @GetMapping("/matriculas/por-estado")
-    public List<TotalPorEstadoDTO> getTotalPorEstado() {
-        return repository.totalPorEstado();
+    @GetMapping("/matriculas")
+    public List<Matricula> getMatriculas(
+        @RequestParam(required = false) String estado,
+        @RequestParam(required = false) Integer ano
+    ) {
+        return service.consultarMatriculas(estado, ano);
     }
 }

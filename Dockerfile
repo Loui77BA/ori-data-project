@@ -1,14 +1,13 @@
-# Usar uma imagem base com Java 17
-FROM openjdk:17-jdk-slim
-
-# Criar diretório de trabalho
+# Builder image
+FROM maven:3.8.5-openjdk-17 as builder
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copiar o JAR gerado para o contêiner
-COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
-
-# Expor a porta 8080
+# Runtime image
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Comando para iniciar a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]
